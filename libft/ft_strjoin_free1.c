@@ -6,13 +6,13 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 00:52:48 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/01/19 01:01:45 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/05 17:24:06 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char			*ft_strjoin_f1(char const *s1, char const *s2)
+char			*ft_strjoin_free1(char const *s1, char const *s2)
 {
 	size_t	s1len;
 	size_t	s2len;
