@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 15:44:26 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/06 18:14:57 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/07 12:40:56 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void			parse_texture(char *line, int ret, t_param *param)
 	else if (ret == 4)
 		param->env.wall_ea.path = ft_strdup(line);
 	else if (ret == 5)
-		param->env.sprites.texture.path = ft_strdup(line);
+		param->env.sprite_texture.path = ft_strdup(line);
 }
 
 static	int		get_colour(int r, int g, int b)

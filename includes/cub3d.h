@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:10:58 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/06 18:06:54 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/07 12:40:58 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_texture
 
 typedef  struct s_sprite
 {
-	t_texture	texture;
 	int		posx;
 	int		posy;
 }				t_sprite;
@@ -51,7 +50,8 @@ typedef struct s_env
 	int color_ceiling;
 	int color_floor;
 	//SPRITES
-	t_sprite  sprites;
+	t_list		**sprites;
+	t_texture	sprite_texture;
 	//map
 	char **map;
 }				t_env;
@@ -66,7 +66,7 @@ typedef struct s_param
 char	*trim_spaces(char *buffer);
 
 //parsing_map.c
-void	parse_map(char **map);
+void	parse_map(char **map, t_param  *param);
 
 //parse_utils.c
 void	parse_resolution(char *line, int ret, t_param *param);

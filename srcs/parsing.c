@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:30:34 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/06 18:09:39 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/07 12:55:23 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ void			ft_get_map(char *line, int fd, t_param *param)
 			display_error("wrong syntaxe for the map", EXIT_FAILURE);
 	}
 	param->env.map = ft_split(line, '\n');
-	printf("fgh\n");
-	parse_map(param->env.map);
+	parse_map(param->env.map, param);
 }
 
 static int		check_line(char *line)

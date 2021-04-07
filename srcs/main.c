@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 19:35:35 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/06 18:15:15 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/07 13:30:35 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ void		display_error(char *msg, int code)
 {
 	printf("%s\n", msg);
 	exit(code);
+}
+
+void		init_param(t_param * param)
+{
+	param->env.map = NULL;
+	param->env.sprites = malloc(sizeof(t_sprite *));
+	*param->env.sprites= NULL;
 }
 
 int			main(int argc, char **argv)
@@ -31,7 +38,7 @@ int			main(int argc, char **argv)
 	param = malloc(sizeof(t_param) * 1);
 	if (param == NULL)
 		return (EXIT_FAILURE);
-	param->env.map = NULL;
+	init_param(param);
 	ft_parse_file(param, fd);
 	close(fd);
 	return (EXIT_SUCCESS);
