@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:30:34 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/07 12:55:23 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/13 20:29:16 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void			ft_get_map(char *line, int fd, t_param *param)
 	}
 	param->env.map = ft_split(line, '\n');
 	parse_map(param->env.map, param);
+	if (param->env.posd == 0)
+		display_error("No starting position  defined", EXIT_FAILURE);
 }
 
 static int		check_line(char *line)

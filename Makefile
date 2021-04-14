@@ -6,7 +6,7 @@
 #    By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 15:23:49 by amdedieu          #+#    #+#              #
-#    Updated: 2021/04/06 14:06:33 by amdedieu         ###   ########.fr        #
+#    Updated: 2021/04/14 12:40:54 by amdedieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS = parsing.c \
 		main.c    \
 		utils.c    \
 		parse_utils.c\
-		parsing_map.c
+		parsing_map.c\
+		check_map_outline.c
 OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.c=.o))
 DPDCS = $(OBJS:.o=.d)
 INCLUDES = -I includes/ -I libft/

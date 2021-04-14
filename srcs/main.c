@@ -6,11 +6,11 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 19:35:35 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/07 13:30:35 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/13 18:04:24 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 void		display_error(char *msg, int code)
 {
@@ -21,8 +21,9 @@ void		display_error(char *msg, int code)
 void		init_param(t_param * param)
 {
 	param->env.map = NULL;
-	param->env.sprites = malloc(sizeof(t_sprite *));
-	*param->env.sprites= NULL;
+	param->env.sprites = malloc(sizeof(t_list **));
+	*(param->env.sprites) = 0;
+	param->env.posd = 0;
 }
 
 int			main(int argc, char **argv)

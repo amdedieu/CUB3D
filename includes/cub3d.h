@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:10:58 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/07 12:40:58 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/13 20:25:46 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_env
 	t_texture	sprite_texture;
 	//map
 	char **map;
+	// position depart
+	char posd;
 }				t_env;
 
 typedef struct s_param
@@ -64,9 +66,12 @@ typedef struct s_param
 
 //utils.c
 char	*trim_spaces(char *buffer);
+void	free_tab(char **tab);
+void 	handle_error(int ret, char **map);
 
 //parsing_map.c
 void	parse_map(char **map, t_param  *param);
+void	get_pos(char **map, t_param *param);
 
 //parse_utils.c
 void	parse_resolution(char *line, int ret, t_param *param);
@@ -79,3 +84,5 @@ int		ft_parse_file(t_param *param, int fd);
 
 //main.c
 void	display_error(char *msg, int code);
+//check_map_outline.c
+int		check_map_outline(char **map);
