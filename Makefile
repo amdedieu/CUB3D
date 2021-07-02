@@ -6,7 +6,7 @@
 #    By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 15:23:49 by amdedieu          #+#    #+#              #
-#    Updated: 2021/04/14 12:40:54 by amdedieu         ###   ########.fr        #
+#    Updated: 2021/04/19 18:33:39 by amdedieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,10 @@ SRCS = parsing.c \
 		check_map_outline.c
 OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.c=.o))
 DPDCS = $(OBJS:.o=.d)
-INCLUDES = -I includes/ -I libft/
+INCLUDES = -I includes/ -I libft/ -I mlx/
 LIB = -Llibft -lft
-CFLAGS = -Wall -Wextra -Werror
-#MLX = -lmlx -framework OpenGL -framework AppKit
+CFLAGS = -Wall -Wextra -Werror -flto -O2 -march=native
+MLX = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
 opti :
 	@(make -j all)
@@ -33,8 +33,8 @@ all : $(NAME)
 
 -include $(DPDCS)
 
-$(NAME) : $(LIB) $(OBJS)
-	@(gcc $(CFLAGS) $(OBJS) $(LIB) $(INCLUDES) -o $(NAME))
+$(NAME) : $(LIB) $(OBJS) 
+	@(gcc $(MLX) $(CFLAGS) $(OBJS) $(LIB) $(INCLUDES) -o $(NAME))
 	@(echo "cub3D created")
 
 $(LIB) :
@@ -57,6 +57,6 @@ fclean : clean
 re : fclean all
 
 fg : $(LIB) $(OBJS)
-	@(gcc $(CFLAGS) -g3 -fsanitize=address $(OBJS) $(LIB) $(INCLUDES)  -o $(NAME) )
+	@(gcc $(MLX) $(CFLAGS) -g3 -fsanitize=address $(OBJS) $(LIB) $(INCLUDES)  -o $(NAME) )
 	@(echo "cub3D created")
 

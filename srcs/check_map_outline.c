@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 17:43:19 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/14 01:22:49 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/04/14 12:52:44 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,19 @@ static int check_space_closed(char **map, int i, int j, int limit)
 	if (!check_closed(map, i, j, 1))
 		return 0;
 
-	if (ret == 1)
-	{
-		map[i][j] = 'X';
-		printf("marking : %d %d\n", i, j);
-		display(map);
-		sleep(1);
-		system("clear");
-	}
-	if (ret == 2)
-		map[i][j] = 'X';
+	// if (ret == 1)
+	// {
+	// 	map[i][j] = 'X';
+	// 	printf("marking : %d %d\n", i, j);
+	// 	display(map);
+	// 	sleep(1);
+	// 	system("clear");
+	// }
+	// if (ret == 2)
+	// 	map[i][j] = 'X';
 
-	if (ret == 0)
-		map[i][j] = 'X';
+	// if (ret == 0)
+	// 	map[i][j] = 'X';
 
 	return ret;
 }
