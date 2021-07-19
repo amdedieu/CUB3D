@@ -6,11 +6,19 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 13:42:07 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/06/30 15:11:23 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/07/19 13:10:44 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int  map_length(char ** map)
+{
+	int i = 0;
+	while (map[i++])
+		;
+	return i - 1;
+}
 
 static	int		check_limit(char *str)
 {
@@ -25,39 +33,6 @@ static	int		check_limit(char *str)
 			return (0);
 	}
 	return (1);
-}
-
-static void	register_sprite(int posx, int posy, t_list **list)
-{
-	t_sprite *new_sprite;
-
-	new_sprite = malloc(sizeof(t_sprite *));
-	if (!new_sprite)
-		display_error("register_sprite() : malloc failed", EXIT_FAILURE);
-	new_sprite->posx = posx;
-	new_sprite->posy = posy;
-	ft_lstadd_back(list, ft_lstnew((void *)new_sprite));
-}
-
-void	stock_sprites(char **map, t_param *param)
-{
-	int x;
-	int y;
-
-	x = -1;
-	y = 0;
-	if (!param->env.sprites)
-		exit_map(map);
-	while (map[++x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			if (map[x][y] == '2')
-				register_sprite(x, y, param->env.sprites);
-			y++;
-		}
-	}
 }
 
 void	get_pos(char **map, t_param *param)
@@ -90,6 +65,31 @@ void	get_pos(char **map, t_param *param)
 	}
 }
 
+int check_map_outline(char **map)
+{
+	int i = 0;
+	int j;
+	int diff;
+
+	while (map[++i])
+	{
+		j = -1;
+		while (map[i][++j] == ' ')
+			;
+		if (map[i][j] != '1')
+			return 10; // pas de 1 au debut de la ligne
+		diff = ft_strlen(map[i]) - ft_strlen(map[i - 1]);
+		if (!check_diff(map[i], map[i - 1], diff))
+			return 11; // fin de ligne pas fermer avec diff
+		if (!check_space(map, i, j))
+			return 12; // espace dans la map non fermé
+	}
+	if (!check_last_line(map, --i))
+		return 13; // fin de ligne pas fermé
+	//display(map);
+	return 1; // tout ok
+}
+
 void			parse_map(char **map, t_param *param)
 {
 	int x;
@@ -98,7 +98,6 @@ void			parse_map(char **map, t_param *param)
 
 	x = 1;
 	sizex = size_map(map);
-	stock_sprites(map, param);
 
 	if (!check_limit(map[0]) || !check_limit(map[sizex]))
 		display_error("Error map", 10);

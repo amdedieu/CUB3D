@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:10:58 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/06/28 17:55:11 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/07/19 14:47:47 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #include <../mlx/mlx.h>
 #include "libft.h"
 #include <math.h>
-# define MOVESPEED 0.2
-# define ROTATESPEED 0.1
+# define MOVESPEED 0.09
+# define ROTATESPEED 0.05
 # define texw 64
 # define texh 64
 // # define CHARSET[1] "./path_to_texture_north"
@@ -131,16 +131,21 @@ typedef struct s_param
 	t_cast		cast;
 }				t_param;
 
+//error.c
+void 	handle_error(int ret, char **map);
+void	display_error(char *msg, int code);
+
 //utils.c
 char	*trim_spaces(char *buffer);
 void	free_tab(char **tab);
 int		size_map(char **map);
 void		exit_map(char **map);
-void 	handle_error(int ret, char **map);
 
 //parsing_map.c
 void	parse_map(char **map, t_param  *param);
 void	get_pos(char **map, t_param *param);
+int		check_map_outline(char **map);
+int  map_length(char ** map);
 
 //parse_utils.c
 void	parse_resolution(char *line, int ret, t_param *param);
@@ -148,10 +153,27 @@ void	parse_texture(char *line, int ret, t_param *param);
 void	parse_color(char *line, int ret, t_param *param);
 int		check_if_map(char *line);
 
+//movement.c
+void    move_right(float dirx, float diry, t_param *param);
+void    move_left(float dirx, float diry, t_param *param);
+void    move_front(float dirx, float diry, t_param *param);
+void    move_back(float dirx, float diry, t_param *param);
+void	ft_move(t_param *param);
+
+
+//rotate.c
+void    rotate_right(t_param *param);
+void    rotate_left(t_param *param);
+
 //parsing.c
 int		ft_parse_file(t_param *param, int fd);
 
 //main.c
-void	display_error(char *msg, int code);
+int		 test_func(t_param *param);
+
 //check_map_outline.c
-int		check_map_outline(char **map);
+int check_last_line(char ** map, int i);
+int check_space(char **map, int i, int j);
+int check_space_closed(char **map, int i, int j, int limit);
+int check_closed(char ** map, int i, int j, int last);
+int check_diff(char * current_line, char * past_line, int diff);

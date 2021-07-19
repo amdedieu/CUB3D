@@ -6,7 +6,7 @@
 #    By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 15:23:49 by amdedieu          #+#    #+#              #
-#    Updated: 2021/04/19 18:33:39 by amdedieu         ###   ########.fr        #
+#    Updated: 2021/07/19 14:47:17 by amdedieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,11 @@ NAME = Cub3D
 SRCSDIR = srcs
 OBJSDIR = .objs
 SRCS = parsing.c \
+		error.c \
 		main.c    \
 		utils.c    \
+		movement.c \
+		roate.c \
 		parse_utils.c\
 		parsing_map.c\
 		check_map_outline.c

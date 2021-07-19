@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 15:44:26 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/04/07 12:40:56 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/07/14 18:50:43 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int				check_if_map(char *line)
 	line = trim_spaces(line);
 	while (line[i])
 	{
-		if (line[i] == '1' || line[i] == '0' || line[i] == '2' || line[i] == 'N'
+		if (line[i] == '1' || line[i] == '0'|| line[i] == 'N'
 			|| line[i] == 'S' || line[i] == 'W' || line[i] == 'E'
 			|| line[i] == ' ')
 			i++;

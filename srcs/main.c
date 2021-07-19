@@ -6,24 +6,15 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 19:35:35 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/06/30 15:14:28 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/07/19 14:48:37 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void		display_error(char *msg, int code)
-{
-	printf("Error\n");
-	printf("%s\n", msg);
-	exit(code);
-}
-
 void		init_param(t_param * param)
 {
 	param->env.map = NULL;
-	param->env.sprites = malloc(sizeof(t_list **));
-	*(param->env.sprites) = 0;
 	param->env.posd = 0;
 	param->mlx.mlx_window = 0;
 	param->mlx.mlx_ptr = 0;
@@ -155,85 +146,6 @@ void	__unused	get_event(t_param *param)
 		//get_direction()
 }
 
-void    rotate_right(t_param *param)
-{
-	float    old_dir;
-	float    old_planx;
-
-	old_dir = param->cast.dirx;
-	old_planx = param->cast.planx;
-	param->cast.dirx = param->cast.dirx * cos(-ROTATESPEED) - param->cast.diry * sin(-ROTATESPEED);
-	param->cast.diry = old_dir * sin(-ROTATESPEED) + param->cast.diry * cos(-ROTATESPEED);
-	param->cast.planx = param->cast.planx * cos(-ROTATESPEED) - param->cast.plany * sin(-ROTATESPEED);
-	param->cast.plany = old_planx * sin(-ROTATESPEED) + param->cast.plany * cos(-ROTATESPEED);
-}
-
-void    rotate_left(t_param *param)
-{
-	float    old_dir;
-	float    old_planx;
-
-	old_dir = param->cast.dirx;
-	old_planx = param->cast.planx;
-	param->cast.dirx = param->cast.dirx * cos(ROTATESPEED) - param->cast.diry * sin(ROTATESPEED);
-	param->cast.diry = old_dir * sin(ROTATESPEED) + param->cast.diry * cos(ROTATESPEED);
-	param->cast.planx = param->cast.planx * cos(ROTATESPEED) - param->cast.plany * sin(ROTATESPEED);
-	param->cast.plany = old_planx * sin(ROTATESPEED) + param->cast.plany * cos(ROTATESPEED);
-}
-// void    move_right(float *posx, float *posy, float dirx, float diry, t_param *param)
-// {
-// 	if (param->env.map[(int)*posx][(int)(*posy - (MOVESPEED) * dirx)] == '0')
-// 		*posy -= (MOVESPEED * dirx);
-// 	if (param->env.map[(int)(*posx + (MOVESPEED * diry))][(int)*posy] == '0')
-// 		*posx += (MOVESPEED * diry);
-
-void    move_right(float dirx, float diry, t_param *param)
-{
-	if (param->env.map[(int) param->cast.posx][(int)(param->cast.posy - (MOVESPEED) * dirx)] != '1')
-		param->cast.posy -= (MOVESPEED * dirx);
-	if (param->env.map[(int)(param->cast.posx + (MOVESPEED * diry))][(int)param->cast.posy] != '1')
-		param->cast.posx += (MOVESPEED * diry);
-}
-void    move_left(float dirx, float diry, t_param *param)
-{
-		if (param->env.map[(int)(param->cast.posx )][(int)(param->cast.posy +(MOVESPEED * param->cast.dirx))] != '1')
-			param->cast.posy += (MOVESPEED * dirx);
-		if (param->env.map[(int)(param->cast.posx - MOVESPEED * param->cast.diry)][(int)param->cast.posy] != '1')
-			param->cast.posx -= (MOVESPEED * diry);
-}
-
-void    move_front(float dirx, float diry, t_param *param)
-{
-	if (param->env.map[(int)(param->cast.posx )][(int)(param->cast.posy + MOVESPEED * param->cast.diry)] != '1')		
-		param->cast.posy += (MOVESPEED * diry);
-	if (param->env.map[(int)(param->cast.posx +( MOVESPEED * param->cast.dirx))][(int)param->cast.posy] != '1')
-		param->cast.posx += (MOVESPEED * dirx);
-}
-
-void    move_back(float dirx, float diry, t_param *param)
-{
-		if (param->env.map[(int)(param->cast.posx )][(int)(param->cast.posy - MOVESPEED * param->cast.diry)] != '1')
-			param->cast.posy -= (MOVESPEED * diry);
-		if (param->env.map[(int)(param->cast.posx -( MOVESPEED * param->cast.dirx))][(int)param->cast.posy] != '1')
-	   		param->cast.posx -= (MOVESPEED * dirx);
-}
-
-void	ft_move(t_param *param)
-{
-		if(param->key.d == 1)
-			move_right(param->cast.dirx, param->cast.diry, param);
-		if (param->key.w  == 1)
-			move_front(param->cast.dirx, param->cast.diry, param);
-		if (param->key.a == 1)
-			move_left(param->cast.dirx, param->cast.diry, param);
-		if (param->key.s == 1)
-			move_back(param->cast.dirx, param->cast.diry, param);
-		if (param->key.left == 1)
-			rotate_left(param);
-		if (param->key.right == 1)
-			rotate_right(param);
-}
-
 int		 test_func(t_param *param)
 {
 	int x;
@@ -337,7 +249,6 @@ int		get_number(int key, t_param *param)
 		param->key.left = 1;
 	if (key == 124)
 		param->key.right = 1;
-	// printf("%d\n", key);
 	return (0);
 }
 
