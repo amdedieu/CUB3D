@@ -1,21 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/18 12:10:58 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/07/19 14:47:47 by amdedieu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+#ifndef CUB3D_H
+# define CUB3D_H
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <../mlx/mlx.h>
-#include "libft.h"
+#include "../mlx/mlx.h"
+#include "../libft/libft.h"
 #include <math.h>
 # define MOVESPEED 0.09
 # define ROTATESPEED 0.05
@@ -35,6 +25,13 @@ typedef struct s_resolution
 typedef struct s_texture
 {
 	char * path;
+	int h;
+	int w;
+	char *tex_addr;
+	void *tex_ptr;
+	int	size_line;
+	int bpp;
+	int endian;
 }				t_texture;
 
 typedef  struct s_sprite
@@ -68,6 +65,7 @@ typedef struct	s_cast
 	//float cameray 
 	float ray_dirx;
 	float ray_diry;
+	long double wall_hit;
     float side_distx;
     float side_disty;
     float delta_distx;
@@ -92,6 +90,7 @@ typedef struct	s_cast
 typedef struct s_env
 {
 	//MURS
+	t_texture current_wall;
 	t_texture wall_no;
 	t_texture wall_so;
 	t_texture wall_ea;
@@ -177,3 +176,4 @@ int check_space(char **map, int i, int j);
 int check_space_closed(char **map, int i, int j, int limit);
 int check_closed(char ** map, int i, int j, int last);
 int check_diff(char * current_line, char * past_line, int diff);
+#endif

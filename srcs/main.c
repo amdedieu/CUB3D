@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/24 19:35:35 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/07/19 14:48:37 by amdedieu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/cub3d.h"
 
 void		init_param(t_param * param)
@@ -56,7 +44,6 @@ static void    setup_view(t_param *param)
 
 void	init_raycast(t_param *param)
 {
-	//int	buffer[param->cast.screenh][param->cast.screenw];
 	param->cast.posx = param->env.posc[0] + 0.5;
 	param->cast.posy =  param->env.posc[1] + 0.5;
 	param->cast.dirx = 0;
@@ -74,12 +61,67 @@ void	init_raycast(t_param *param)
 	param->cast.stepX = 0;
 	param->cast.stepY = 0;
 	param->cast.hit = 0;
+	param->cast.wall_hit = 0;
 	param->cast.line_height = 0;
 	param->cast.draw_end = 0;
 	param->cast.draw_start = 0;
 	param->cast.color = 0;
 	setup_view(param);
 }
+
+static void    draw_tex(t_param *param, t_texture *tex, int i)
+{
+    int texy;
+    int texx;
+
+    texx = ((int)(param->cast.wall_hit * (float)tex->w));
+    if (param->cast.side == 0 && param->cast.ray_dirx > 0)
+        texx = tex->w - texx - 1;
+    if (param->cast.side == 1 && param->cast.ray_diry < 0)
+        texx = tex->w - texx - 1;
+    while (param->cast.draw_start < param->cast.draw_end)
+    {
+		 texy = ((((param->cast.draw_start * 256) - (param->resolution.y * 128) + (param->cast.line_height * 128)) * tex->h) / param->cast.line_height) / 256;
+        *(param->mlx.img_addr + (i * 4 + 0) + (param->mlx.size_line *
+        param->cast.draw_start)) = *(tex->tex_addr + (texx * 4 + 0) +
+        (tex->size_line * texy));
+        *(param->mlx.img_addr + (i * 4 + 1) + (param->mlx.size_line *
+        param->cast.draw_start)) = *(tex->tex_addr + (texx * 4 + 1) +
+        (tex->size_line * texy));
+        *(param->mlx.img_addr + (i * 4 + 2) + (param->mlx.size_line *
+        param->cast.draw_start)) = *(tex->tex_addr + (texx * 4 + 2) +
+        (tex->size_line * texy));
+        *(param->mlx.img_addr + (i * 4 + 3) + (param->mlx.size_line *
+        param->cast.draw_start++)) = *(tex->tex_addr + (texx * 4 + 3) +
+        (tex->size_line * texy));
+	//printf("%Lf, %i, %i\n", param->cast.wall_hit, tex->h, tex->size_line);
+    }
+}
+
+static void    draw_wall(t_param *param, int x)
+{
+    if (param->cast.side == 0)
+        param->cast.wall_hit = param->cast.posy + param->cast.perpWallDist * param->cast.ray_diry;
+    else
+        param->cast.wall_hit = (param->cast.perpWallDist * param->cast.ray_dirx)
+        + param->cast.posx;
+    param->cast.wall_hit -= floor(param->cast.wall_hit);
+    if (param->cast.side == 0)
+    {
+        if (param->cast.perpWallDist * param->cast.ray_dirx > 0)
+            draw_tex(param, &(param->env.wall_no), x);
+        else
+            draw_tex(param, &(param->env.wall_so), x);
+    }
+    else if (param->cast.side == 1)
+    {
+        if (param->cast.perpWallDist * param->cast.ray_diry > 0)
+            draw_tex(param, &(param->env.wall_ea), x);
+        else
+            draw_tex(param, &(param->env.wall_we), x);
+    }
+}
+
 
 void    draw_font(t_mlx *mlx, t_param *param)
 {
@@ -105,46 +147,6 @@ void    draw_font(t_mlx *mlx, t_param *param)
 	}
 }
 
-void	draw_tex(t_param *param, int i)
-{
-	int texy;
-	int texx;
-
-	texx = ((int)(param->cast.hit * (float)texw));
-	if (param->cast.side == 1 && param->cast.ray_dirx > 0)
-		texx = texw - texx - 1;
-	if (param->cast.side == 0 && param->cast.ray_diry < 0)
-		texx = texw - texx - 1;
-	while (param->cast.draw_start < param->cast.draw_end)
-	{
-		texy = ((((param->cast.draw_start * 256) - (param->resolution.y * 128) +
-		(param->cast.line_height * 128)) * texh) / param->cast.line_height) / 256;
-		*(param->mlx.img_addr + (i * 4 + 0) + (param->mlx.size_line *
-		param->cast.draw_start)) = *(param->mlx.img_addr + (texx * 4 + 0) +
-		(param->mlx.size_line * texy));
-		*(param->mlx.img_addr + (i * 4 + 1) + (param->mlx.size_line *
-		param->cast.draw_start)) = *(param->mlx.img_addr + (texx * 4 + 1) +
-		(param->mlx.size_line * texy));
-		*(param->mlx.img_addr + (i * 4 + 2) + (param->mlx.size_line *
-		param->cast.draw_start)) = *(param->mlx.img_addr + (texx * 4 + 2) +
-		(param->mlx.size_line * texy));
-		*(param->mlx.img_addr + (i * 4 + 3) + (param->mlx.size_line *
-		param->cast.draw_start++)) = *(param->mlx.img_addr + (texx * 4 + 3) +
-		(param->mlx.size_line * texy));
-	}
-}
-
-
-int		save_bmp(t_param *param)
-{
-	(void)param;
-	return (0);
-}
-void	__unused	get_event(t_param *param)
-{
-	(void)param;
-		//get_direction()
-}
 
 int		 test_func(t_param *param)
 {
@@ -154,7 +156,6 @@ int		 test_func(t_param *param)
 
 	ft_move(param);
 	draw_font(&(param->mlx), param);
-
 	while(++x < param->resolution.x)
 	{
 		param->cast.hit = 0;
@@ -214,19 +215,14 @@ int		 test_func(t_param *param)
 	  if (param->cast.draw_start < 0) 
 	  	param->cast.draw_start = 0;
 	  param->cast.draw_end = param->cast.line_height / 2 + param->resolution.y / 2;
-	  if (param->cast.draw_end >= param->resolution.y) 
+	  if (param->cast.draw_end >= param->resolution.y)
 	  	param->cast.draw_end = param->resolution.y - 1;
-  	while(param->cast.draw_start < param->cast.draw_end)
-	{
-		*(param->mlx.img_addr + (x * 4 + 0) + (param->mlx.size_line * param->cast.draw_start)) = 0;
-		*(param->mlx.img_addr + (x * 4 + 1) + (param->mlx.size_line * param->cast.draw_start)) = 0;
-		*(param->mlx.img_addr + (x * 4 + 2) + (param->mlx.size_line * param->cast.draw_start)) = 120;
-		param->cast.draw_start++;
-	}
+		draw_wall(param, x);
 	}
 	mlx_put_image_to_window(param->mlx.mlx_ptr, param->mlx.win_ptr, param->mlx.img_ptr, 0, 0);
 	return (0);
 }
+
 
 int		exit_window(t_param  *param)
 {
@@ -249,10 +245,10 @@ int		get_number(int key, t_param *param)
 		param->key.left = 1;
 	if (key == 124)
 		param->key.right = 1;
+	if(key == 53)
+		exit(1);
 	return (0);
 }
-
-
 
 void		put_pixel_addr(t_param *param, int x, int y, int color)
 {
@@ -277,8 +273,25 @@ int		push_nbr(int key, t_param *param)
 		param->key.left = 0;
 	if (key == 124)
 		param->key.right= 0;
-	
 	return (0);
+}
+
+static void		get_texture(t_texture *tex, t_param *param)
+{
+	tex->tex_ptr = mlx_xpm_file_to_image(param->mlx.mlx_ptr,
+		tex->path, &tex->w, &tex->h);
+	if (!(tex->tex_ptr))
+		display_error("texture", 5);
+	tex->tex_addr = mlx_get_data_addr(tex->tex_ptr,
+		&(tex->bpp), &(tex->size_line), &(param->mlx.bpp));
+}
+
+static void		get_all_texture(t_param	*param)
+{
+	get_texture(&param->env.wall_no, param);
+	get_texture(&param->env.wall_so, param);
+	get_texture(&param->env.wall_ea, param);
+	get_texture(&param->env.wall_we, param);
 }
 
 void	 cub3d(t_param *param)
@@ -288,13 +301,13 @@ void	 cub3d(t_param *param)
 	param->mlx.img_ptr = mlx_new_image(param->mlx.mlx_ptr, param->resolution.x, param->resolution.y);
 	param->mlx.img_addr = mlx_get_data_addr(param->mlx.img_ptr, &(param->mlx.bpp), &(param->mlx.size_line), &(param->mlx.endian));
 	param->mlx.win_ptr = mlx_new_window(param->mlx.mlx_ptr, param->resolution.x, param->resolution.y, "CUB3D");
+	get_all_texture(param);
 	mlx_hook(param->mlx.win_ptr,  17, 0L, exit_window, param);
 	mlx_do_key_autorepeatoff(param->mlx.mlx_ptr);
 	mlx_hook(param->mlx.win_ptr, 3, 1L<<1, push_nbr, param);
 	mlx_hook(param->mlx.win_ptr, 2, 1L<<0, get_number, param);
 	mlx_loop_hook(param->mlx.mlx_ptr, test_func, param);
 	mlx_loop(param->mlx.mlx_ptr);
-
 }
 
 int			main(int argc, char **argv)
