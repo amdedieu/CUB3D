@@ -52,7 +52,6 @@ typedef struct	s_key
 
 typedef struct	s_cast
 {
-	
 	float	posx;
 	float	posy;
 	float	dirx;
@@ -87,10 +86,10 @@ typedef struct	s_cast
 	int x_mask;
 	int  color;
 }				t_cast;
+
 typedef struct s_env
 {
 	//MURS
-	t_texture current_wall;
 	t_texture wall_no;
 	t_texture wall_so;
 	t_texture wall_ea;
@@ -125,20 +124,21 @@ typedef struct s_param
 {
 	t_resolution resolution;
 	t_env		env;
+	t_list 		**addr;
 	t_mlx		mlx;
 	t_key		key;
 	t_cast		cast;
 }				t_param;
 
 //error.c
-void 	handle_error(int ret, char **map);
-void	display_error(char *msg, int code);
+void 	handle_error(int ret, t_param *param);
+void	display_error(char *msg, int code, t_param *param);
 
 //utils.c
 char	*trim_spaces(char *buffer);
 void	free_tab(char **tab);
 int		size_map(char **map);
-void		exit_map(char **map);
+void		exit_map(char **map,t_param *param);
 
 //parsing_map.c
 void	parse_map(char **map, t_param  *param);
@@ -159,6 +159,8 @@ void    move_front(float dirx, float diry, t_param *param);
 void    move_back(float dirx, float diry, t_param *param);
 void	ft_move(t_param *param);
 
+//addr_collector.c
+void	*add_ptr(void *content, t_list **list);
 
 //rotate.c
 void    rotate_right(t_param *param);

@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 21:18:41 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/07/19 14:56:31 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/08/18 16:12:44 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ char	*trim_spaces(char *buffer)
 	return (buffer + i);
 }
 
-void		exit_map(char **map)
+void		exit_map(char **map, t_param *param)
 {
 	free_tab(map);
-	display_error("wrong format for the map", EXIT_FAILURE);
+	display_error("wrong format for the map", EXIT_FAILURE, param);
 }
 
 int		size_map(char **map)
@@ -48,4 +48,5 @@ void		free_tab(char **tab)
 		free(tab[i]);
 		i++;
 	}
+	free(tab);
 }

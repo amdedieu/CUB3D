@@ -6,11 +6,12 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/12 17:47:17 by ameliadedie       #+#    #+#             */
-/*   Updated: 2021/03/23 21:55:49 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/08/18 16:05:56 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>  // TODO : DEL
 
 char			*ft_refresh_stock(char *stock, int i)
 {
@@ -66,7 +67,7 @@ int				get_next_line(int fd, char **line)
 		if (ret == -1)
 			return (ft_return(-1, &buffer, &stock));
 		buffer[ret] = '\0';
-		stock = ft_strjoin(stock, buffer);
+		stock = ft_strjoin_free1(stock, buffer);
 	}
 	i = 0;
 	while (stock[i] && stock[i] != '\n')

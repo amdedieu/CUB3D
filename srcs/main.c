@@ -2,6 +2,10 @@
 
 void		init_param(t_param * param)
 {
+	param->addr = malloc(sizeof(t_list *));
+	if(!param->addr)
+		display_error("malloc failed",EXIT_FAILURE, param);
+	*param->addr = NULL;
 	param->env.map = NULL;
 	param->env.posd = 0;
 	param->mlx.mlx_window = 0;
@@ -226,8 +230,8 @@ int		 test_func(t_param *param)
 
 int		exit_window(t_param  *param)
 {
-	(void)param;
-	exit(0);
+		display_error("program leaved successfully", EXIT_SUCCESS, param);
+		return (1);
 }
 
 int		get_number(int key, t_param *param)
@@ -246,7 +250,7 @@ int		get_number(int key, t_param *param)
 	if (key == 124)
 		param->key.right = 1;
 	if(key == 53)
-		exit(1);
+		display_error("program leaved successfully", EXIT_SUCCESS, param);
 	return (0);
 }
 
@@ -281,7 +285,7 @@ static void		get_texture(t_texture *tex, t_param *param)
 	tex->tex_ptr = mlx_xpm_file_to_image(param->mlx.mlx_ptr,
 		tex->path, &tex->w, &tex->h);
 	if (!(tex->tex_ptr))
-		display_error("texture", 5);
+		display_error("texture failed", 12, param);
 	tex->tex_addr = mlx_get_data_addr(tex->tex_ptr,
 		&(tex->bpp), &(tex->size_line), &(param->mlx.bpp));
 }
@@ -310,29 +314,56 @@ void	 cub3d(t_param *param)
 	mlx_loop(param->mlx.mlx_ptr);
 }
 
+static int	ft_is_valid_file(char *str)
+{
+	char *ext;
+
+	ext = str;
+	while (ft_strchr(ext, '.'))
+		ext = ft_strchr(ext, '.') + 1;
+	if (ft_strncmp(ext, "cub\0", 4) == 0)
+		return (1);
+	return  (0);	
+}
+
+static int check_param(t_param *param)
+{
+	if (param->resolution.x == 0 || param->resolution.y == 0)
+		display_error("missing parameters for resolution", EXIT_FAILURE, param);
+	if (!param->env.wall_no.path || !param->env.wall_ea.path ||
+		!param->env.wall_so.path || !param->env.wall_ea.path)
+		display_error("missing textures for a wall", EXIT_FAILURE, param);
+	if (!param->env.color_floor|| !param->env.color_ceiling)
+		display_error("missing color for ceiling or floor", EXIT_FAILURE, param);
+	if (!param->env.map)
+		display_error("missing map", EXIT_FAILURE, param);
+	return (1);
+}
+
 int			main(int argc, char **argv)
 {
 	int		fd;
 	t_param	*param;
 
-	if (argc < 2 || argc > 4)
-		display_error("wrong parameter number", EXIT_FAILURE);
-	if (argc == 3 && !(ft_strncmp(argv[2], "--save", 6)))
-		display_error("invalid third argument", EXIT_FAILURE);
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		display_error("wrong configuration file", EXIT_FAILURE);
-	
 	param = malloc(sizeof(t_param) * 1);
 	if (param == NULL)
 		return (EXIT_FAILURE);
 	init_param(param);
+	if (argc < 2 || argc > 4)
+		display_error("wrong parameter number", EXIT_FAILURE, param);
+	if (argc == 3 && !(ft_strncmp(argv[2], "--save", 6)))
+		display_error("invalid third argument", EXIT_FAILURE, param);
+	 if (ft_is_valid_file(argv[1]) == 0)
+		display_error("wrong extension name", EXIT_FAILURE, param);	
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		display_error("wrong configuration file", EXIT_FAILURE, param);
+	
 	ft_parse_file(param, fd);
 	close(fd);
-	if (argc == 3)
-		save_bmp(param);
-	else
-		cub3d(param);
+	check_param(param);
+	display_error("c un test en sah", EXIT_FAILURE, param);
+	cub3d(param);
 	
 	return (EXIT_SUCCESS);
 }

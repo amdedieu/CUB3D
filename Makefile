@@ -6,7 +6,7 @@
 #    By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 15:23:49 by amdedieu          #+#    #+#              #
-#    Updated: 2021/07/22 14:11:51 by amdedieu         ###   ########.fr        #
+#    Updated: 2021/08/04 15:13:23 by amdedieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS = parsing.c \
 		rotate.c \
 		parse_utils.c\
 		parsing_map.c\
+		addr_collector.c\
 		check_map_outline.c
 OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.c=.o))
 DPDCS = $(OBJS:.o=.d)
@@ -38,6 +39,10 @@ all : $(NAME)
 
 $(NAME) : $(LIB) $(OBJS) 
 	@(gcc $(MLX) $(CFLAGS) $(OBJS) $(LIB) $(INCLUDES) -o $(NAME))
+	@(echo "cub3D created")
+
+fg : $(LIB) $(OBJS) 
+	@(gcc $(MLX) $(CFLAGS) -g3 -fsanitize=address $(OBJS) $(LIB) $(INCLUDES) -o $(NAME))
 	@(echo "cub3D created")
 
 $(LIB) :

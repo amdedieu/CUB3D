@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 13:42:07 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/07/19 13:10:44 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/08/18 12:31:38 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ void	get_pos(char **map, t_param *param)
 					param->env.posc[1] = j;
 				}
 				else if (param->env.posd != 0)
-				{
-					free_tab(map);
-					display_error("too many starting positions defined", EXIT_FAILURE);
-				}
+					display_error("too many starting positions defined", EXIT_FAILURE, param);
 			}
 		}
 	}
@@ -100,10 +97,10 @@ void			parse_map(char **map, t_param *param)
 	sizex = size_map(map);
 
 	if (!check_limit(map[0]) || !check_limit(map[sizex]))
-		display_error("Error map", 10);
+		display_error("Error map", 10, param);
 	get_pos(map, param);
 	if (param->env.posd == 0)
-		display_error("no starting position defined", EXIT_FAILURE);
+		display_error("no starting position defined", EXIT_FAILURE, param);
 	ret = check_map_outline(map); // Recup le code et handle error
-	handle_error(ret, map);
+	handle_error(ret, param);
 }

@@ -1,0 +1,37 @@
+Process:         Cub3D [28431]
+Path:            /Users/USER/Documents/*/Cub3D
+Load Address:    0x10e597000
+Identifier:      Cub3D
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [1098]
+
+Date/Time:       2021-08-18 15:45:16.400 +0200
+Launch Time:     2021-08-18 15:45:16.013 +0200
+OS Version:      macOS 11.4 (20F71)
+Report Version:  7
+Analysis Tool:   /usr/bin/leaks
+
+Physical footprint:         752K
+Physical footprint (peak):  752K
+----
+
+leaks Report Version: 4.0
+Process 28431: 807 nodes malloced for 72 KB
+Process 28431: 2 leaks for 528 total leaked bytes.
+
+    2 (528 bytes) << TOTAL >>
+      1 (512 bytes) ROOT LEAK: 0x7fec257042a0 [512]  length: 501  "SO ./textures/blue_wall.xpm..."
+      1 (16 bytes) ROOT LEAK: 0x7fec256040d0 [16]
+
+first  gnl in 0x7fec25704290
+first  gnl in 0x7fec27804080
+first  gnl in 0x7fec27804080
+first  gnl in 0x7fec27804080
+first  gnl in 0x7fec27804080
+first  gnl in 0x7fec27804750
+first  gnl in 0x7fec27804750
+first  gnl in 0x7fec27804080
+in it
+in it
+Error, jpp du c
