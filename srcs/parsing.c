@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:30:34 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/08/18 16:10:00 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/08/20 17:15:37 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int				check_length(char *buffer)
 {
 	if (!ft_strlen(buffer) || *buffer == '\n')
 	{
-		printf("in it\n");
 		free(buffer);
 		return (1);
 	}
@@ -131,7 +130,6 @@ int				ft_parse_file(t_param *param, int fd)
 			continue ;
 		}
 		ret = check_line(line);
-		printf("first  gnl in %p\n", line);
 		if (check_double_define(param, ret) == 0) // origin pas free si call display error
 			display_error("mutiple definition of parameters", EXIT_FAILURE, param);
 		if (ret == -1)

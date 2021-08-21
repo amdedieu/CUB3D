@@ -1,5 +1,5 @@
 SO ./textures/blue_wall.xpm
-NO ./textures/blue_wall.
+NO ./textures/blue_wall.xpm
 WE ./textures/blue_wall.xpm
 EA ./textures/blue_wall.xpm
 F 220,100,0

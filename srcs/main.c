@@ -89,16 +89,18 @@ static void    draw_tex(t_param *param, t_texture *tex, int i)
         *(param->mlx.img_addr + (i * 4 + 0) + (param->mlx.size_line *
         param->cast.draw_start)) = *(tex->tex_addr + (texx * 4 + 0) +
         (tex->size_line * texy));
+
         *(param->mlx.img_addr + (i * 4 + 1) + (param->mlx.size_line *
         param->cast.draw_start)) = *(tex->tex_addr + (texx * 4 + 1) +
         (tex->size_line * texy));
+
         *(param->mlx.img_addr + (i * 4 + 2) + (param->mlx.size_line *
         param->cast.draw_start)) = *(tex->tex_addr + (texx * 4 + 2) +
         (tex->size_line * texy));
+
         *(param->mlx.img_addr + (i * 4 + 3) + (param->mlx.size_line *
         param->cast.draw_start++)) = *(tex->tex_addr + (texx * 4 + 3) +
         (tex->size_line * texy));
-	//printf("%Lf, %i, %i\n", param->cast.wall_hit, tex->h, tex->size_line);
     }
 }
 
@@ -228,9 +230,34 @@ int		 test_func(t_param *param)
 }
 
 
-int		exit_window(t_param  *param)
+
+static void mlx_clear(t_param *param)
 {
-		display_error("program leaved successfully", EXIT_SUCCESS, param);
+	if (param->env.wall_ea.tex_ptr)
+		mlx_destroy_image(param->mlx.mlx_ptr, param->env.wall_ea.tex_ptr);
+	if (param->env.wall_no.tex_ptr)
+		mlx_destroy_image(param->mlx.mlx_ptr, param->env.wall_no.tex_ptr);
+	if (param->env.wall_so.tex_ptr)
+		mlx_destroy_image(param->mlx.mlx_ptr, param->env.wall_so.tex_ptr);
+	if (param->env.wall_we.tex_ptr)
+		mlx_destroy_image(param->mlx.mlx_ptr, param->env.wall_we.tex_ptr);
+	if (param->mlx.mlx_window)
+	{
+		mlx_clear_window(param->mlx.mlx_ptr, param->mlx.mlx_window);
+		mlx_destroy_window(param->mlx.mlx_ptr, param->mlx.mlx_window);
+	}
+	if (param->mlx.img_ptr)
+		mlx_destroy_image(param->mlx.mlx_ptr, param->mlx.img_ptr);
+		//free(param->mlx.img_addr); // fait un malloc error pointer freed was not allocated
+	printf("%p\n", param->mlx.mlx_ptr);
+	// if (param->mlx.mlx_ptr)
+	// 	free(param->mlx.mlx_ptr);
+}
+
+int		exit_window(t_param  *param, char *msg)
+{
+		mlx_clear(param);
+		display_error(msg, EXIT_SUCCESS, param);
 		return (1);
 }
 
@@ -250,7 +277,7 @@ int		get_number(int key, t_param *param)
 	if (key == 124)
 		param->key.right = 1;
 	if(key == 53)
-		display_error("program leaved successfully", EXIT_SUCCESS, param);
+		exit_window(param, "program leave successfully");
 	return (0);
 }
 
@@ -285,7 +312,7 @@ static void		get_texture(t_texture *tex, t_param *param)
 	tex->tex_ptr = mlx_xpm_file_to_image(param->mlx.mlx_ptr,
 		tex->path, &tex->w, &tex->h);
 	if (!(tex->tex_ptr))
-		display_error("texture failed", 12, param);
+		exit_window(param, "error, texture failed\n");
 	tex->tex_addr = mlx_get_data_addr(tex->tex_ptr,
 		&(tex->bpp), &(tex->size_line), &(param->mlx.bpp));
 }
@@ -301,11 +328,12 @@ static void		get_all_texture(t_param	*param)
 void	 cub3d(t_param *param)
 {
 	init_raycast(param);
+
 	param->mlx.mlx_ptr = mlx_init();
+	get_all_texture(param);
 	param->mlx.img_ptr = mlx_new_image(param->mlx.mlx_ptr, param->resolution.x, param->resolution.y);
 	param->mlx.img_addr = mlx_get_data_addr(param->mlx.img_ptr, &(param->mlx.bpp), &(param->mlx.size_line), &(param->mlx.endian));
 	param->mlx.win_ptr = mlx_new_window(param->mlx.mlx_ptr, param->resolution.x, param->resolution.y, "CUB3D");
-	get_all_texture(param);
 	mlx_hook(param->mlx.win_ptr,  17, 0L, exit_window, param);
 	mlx_do_key_autorepeatoff(param->mlx.mlx_ptr);
 	mlx_hook(param->mlx.win_ptr, 3, 1L<<1, push_nbr, param);
@@ -349,21 +377,16 @@ int			main(int argc, char **argv)
 	if (param == NULL)
 		return (EXIT_FAILURE);
 	init_param(param);
-	if (argc < 2 || argc > 4)
+	if (argc > 2)
 		display_error("wrong parameter number", EXIT_FAILURE, param);
-	if (argc == 3 && !(ft_strncmp(argv[2], "--save", 6)))
-		display_error("invalid third argument", EXIT_FAILURE, param);
 	 if (ft_is_valid_file(argv[1]) == 0)
 		display_error("wrong extension name", EXIT_FAILURE, param);	
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		display_error("wrong configuration file", EXIT_FAILURE, param);
-	
 	ft_parse_file(param, fd);
 	close(fd);
 	check_param(param);
-	display_error("c un test en sah", EXIT_FAILURE, param);
 	cub3d(param);
-	
 	return (EXIT_SUCCESS);
 }

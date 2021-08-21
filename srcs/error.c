@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/19 12:48:40 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/08/18 15:40:55 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/08/20 19:11:21 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ void	display_error(char *msg, int code, t_param *param)
 	}
 	ft_lstclear(param->addr, free);
 	free(param->addr);
-	free(param);
-	printf("Error, %s\n", msg);
+	// free(param);
+	// param = NULL;
+	if (code != 0)
+		printf("Error, ");
+	printf("%s\n", msg);	
 	system("leaks Cub3D");
 	exit(code);
 }

@@ -6,12 +6,11 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/12 17:47:17 by ameliadedie       #+#    #+#             */
-/*   Updated: 2021/08/18 16:05:56 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/08/21 14:35:04 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>  // TODO : DEL
 
 char			*ft_refresh_stock(char *stock, int i)
 {
