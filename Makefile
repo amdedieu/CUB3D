@@ -6,21 +6,27 @@
 #    By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 15:23:49 by amdedieu          #+#    #+#              #
-#    Updated: 2021/08/04 15:13:23 by amdedieu         ###   ########.fr        #
+#    Updated: 2021/08/24 14:39:47 by amdedieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = Cub3D
 SRCSDIR = srcs
 OBJSDIR = .objs
-SRCS = parsing.c \
-		error.c \
-		main.c    \
-		utils.c    \
-		movement.c \
+SRCS =  error.c\
+		main.c\
+		utils.c\
+		check.c\
+		key.c	\
+		draw.c	\
 		rotate.c \
-		parse_utils.c\
+		textures.c\
+		parsing.c\
+		raycast.c \
+		movement.c \
 		parsing_map.c\
+		parse_utils.c\
+		parsing_color.c\
 		addr_collector.c\
 		check_map_outline.c
 OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.c=.o))
