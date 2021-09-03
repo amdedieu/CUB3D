@@ -136,7 +136,6 @@ int		map_length(char **map);
 int		check_param(t_param *param);
 
 // parse_utils.c
-void	parse_resolution(char *line, int ret, t_param *param);
 void	parse_texture(char *line, int ret, t_param *param);
 void	parse_color(char *line, int ret, t_param *param);
 int		check_line(char *line);
