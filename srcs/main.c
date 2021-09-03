@@ -6,7 +6,7 @@
 /*   By: amdedieu <amdedieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:38:39 by amdedieu          #+#    #+#             */
-/*   Updated: 2021/08/23 17:26:03 by amdedieu         ###   ########.fr       */
+/*   Updated: 2021/09/03 15:41:21 by amdedieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	init_param(t_param *param)
 	ft_bzero(&param->mlx, sizeof(param->mlx));
 	ft_bzero(&param->key, sizeof(param->key));
 	ft_bzero(&param->env, sizeof(param->env));
+	param->resolution.x = 800;
+	param->resolution.y = 600;
 }
 
 void	cub3d(t_param *param)
